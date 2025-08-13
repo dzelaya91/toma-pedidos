@@ -1,4 +1,4 @@
-// ✅ Código actualizado con asteriscos en token, campo de comentarios y envío de municipio/departamento
+// ✅ Código actualizado con asteriscos en token y campo de comentarios
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 
@@ -98,17 +98,10 @@ function App() {
       return;
     }
 
-    // 🔹 Extraer municipio y departamento del cliente seleccionado
-    const clienteData = clientes.find(c => c["codigo"] === clienteSeleccionado.value);
-    const municipio = clienteData?.Municipio || "";     // Asegúrate que coincida el nombre exacto de la columna
-    const departamento = clienteData?.Departamento || "";
-
     const pedido = {
       cliente: clienteSeleccionado.label,
       vendedor,
       comentarios,
-      municipio,           // 🔹 Se agrega municipio
-      departamento,        // 🔹 Se agrega departamento
       items: pedidoItems.map((item) => ({
         codigo: item.value,
         producto: item.label.split(" | ")[0],
@@ -123,8 +116,6 @@ function App() {
       cliente: pedido.cliente,
       vendedor: pedido.vendedor,
       comentarios: pedido.comentarios,
-      municipio: pedido.municipio,         // 🔹 Enviar municipio
-      departamento: pedido.departamento,   // 🔹 Enviar departamento
       items: JSON.stringify(pedido.items),
       total: pedido.total,
     });
@@ -159,7 +150,7 @@ function App() {
         <div className="bg-white p-6 rounded shadow-md w-full max-w-sm">
           <h2 className="text-lg font-bold mb-3 text-center">Ingrese Token</h2>
           <input
-            type="password"
+            type="password" // 🔹 Ahora muestra asteriscos
             value={token}
             onChange={(e) => setToken(e.target.value)}
             placeholder="Token..."
@@ -247,6 +238,7 @@ function App() {
           </div>
         </div>
 
+        {/* 🔹 Campo de comentarios */}
         <div className="mb-4">
           <label className="block mb-1 font-medium">Comentarios:</label>
           <textarea
@@ -273,7 +265,7 @@ function App() {
                       onChange={(e) => actualizarCantidad(index, e.target.value)}
                       className="w-12 px-1 border rounded"
                     />
-                    <span>Total: ${(item.precio * item.cantidad).toFixed(2)}</span>
+                    <span>Total: ${ (item.precio * item.cantidad).toFixed(2) }</span>
                     <button
                       onClick={() => eliminarProducto(index)}
                       className="text-red-600 hover:underline"
