@@ -9,7 +9,7 @@ const PRODUCTOS_CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vSKax5qR7rcDOLBKtZqhHFvD2U1INj5kWvfsSE2smhLSk2Y9nEfVws2X81B-JE1t2gStdUMoc9ttlM4/pub?gid=797464977&single=true&output=csv";
 
 const APPS_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbyEHCAZ2G3WGpgeu3vCj11TT8PBDnOCF7fS33mYQd8PPdADIZ0Uz2Q4ob3rACdDTtX86Q/exec";
+  "https://script.google.com/macros/s/AKfycbzvbrbdmPyNeEpRA-9ocmbDHFu5_7znwu2ybGjm50RXqF5bcpvlpE9lEwIzGSSphp7lPQ/exec";
 
 const TOKENS_VALIDOS = ["1230", "4560", "7890", "1011", "1213", "1415", "1617"];
 const NOMBRES_VENDEDORES = [
