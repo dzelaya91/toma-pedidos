@@ -8,7 +8,7 @@ const CLIENTES_CSV_URL =
 const PRODUCTOS_CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vSKax5qR7rcDOLBKtZqhHFvD2U1INj5kWvfsSE2smhLSk2Y9nEfVws2X81B-JE1t2gStdUMoc9ttlM4/pub?gid=797464977&single=true&output=csv";
 
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw-Z6WBIJrdcqRyHN-vJj4CP93s_G54hL1PvkhcKbolXsKyR1wReAbFaHzZfw-ybwQ37Q/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyL7LsmI_HSukglWmx-U9GJXKYNTxc3CeiC-vS_ENOG2D95YSTDjbanr2kTe8XNtXwT0Q/exec";
 
 const TOKENS_VALIDOS = ["1230", "4560", "7890", "1011", "1213", "1415", "1617"];
 const NOMBRES_VENDEDORES = ["Oscar Zuniga", "Vanessa Perez", "Karen Turcios", "Saul Rivas", "Jaime Ramirez", "Johanna Vides", "Oficina"];
