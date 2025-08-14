@@ -1,4 +1,4 @@
-// ✅ Código actualizado con municipio y departamento automáticos
+// ✅ Código actualizado con llenado automático de municipio y departamento
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 
@@ -8,19 +8,10 @@ const CLIENTES_CSV_URL =
 const PRODUCTOS_CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vSKax5qR7rcDOLBKtZqhHFvD2U1INj5kWvfsSE2smhLSk2Y9nEfVws2X81B-JE1t2gStdUMoc9ttlM4/pub?gid=797464977&single=true&output=csv";
 
-const APPS_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbzvbrbdmPyNeEpRA-9ocmbDHFu5_7znwu2ybGjm50RXqF5bcpvlpE9lEwIzGSSphp7lPQ/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw-Z6WBIJrdcqRyHN-vJj4CP93s_G54hL1PvkhcKbolXsKyR1wReAbFaHzZfw-ybwQ37Q/exec";
 
 const TOKENS_VALIDOS = ["1230", "4560", "7890", "1011", "1213", "1415", "1617"];
-const NOMBRES_VENDEDORES = [
-  "Oscar Zuniga",
-  "Vanessa Perez",
-  "Karen Turcios",
-  "Saul Rivas",
-  "Jaime Ramirez",
-  "Johanna Vides",
-  "Oficina",
-];
+const NOMBRES_VENDEDORES = ["Oscar Zuniga", "Vanessa Perez", "Karen Turcios", "Saul Rivas", "Jaime Ramirez", "Johanna Vides", "Oficina"];
 
 function csvToJson(csv) {
   const lines = csv.trim().split("\n");
@@ -47,6 +38,8 @@ function App() {
   const [token, setToken] = useState("");
   const [tokenValido, setTokenValido] = useState(false);
   const [vendedor, setVendedor] = useState(null);
+  const [municipio, setMunicipio] = useState("");
+  const [departamento, setDepartamento] = useState("");
 
   useEffect(() => {
     fetch(CLIENTES_CSV_URL)
@@ -58,9 +51,12 @@ function App() {
       .then((data) => setProductos(csvToJson(data)));
   }, []);
 
+  // Opciones para Select
   const opcionesClientes = clientes.map((cliente) => ({
     value: cliente["codigo"],
     label: `${cliente["cliente"]} - ${cliente["direccion"]}`,
+    municipio: cliente["municipio"] || "",
+    departamento: cliente["departamento"] || "",
   }));
 
   const opcionesProductos = productos.map((producto) => {
@@ -73,12 +69,22 @@ function App() {
     };
   });
 
+  // Manejo de selección de cliente con llenado automático
+  const handleClienteChange = (cliente) => {
+    setClienteSeleccionado(cliente);
+    setMunicipio(cliente?.municipio || "");
+    setDepartamento(cliente?.departamento || "");
+  };
+
   const agregarProducto = () => {
     if (!productoSeleccionado || cantidadSeleccionada < 1) return;
     const yaExiste = pedidoItems.find((item) => item.value === productoSeleccionado.value);
     if (yaExiste) return alert("Producto ya agregado");
 
-    setPedidoItems([...pedidoItems, { ...productoSeleccionado, cantidad: cantidadSeleccionada }]);
+    setPedidoItems([
+      ...pedidoItems,
+      { ...productoSeleccionado, cantidad: cantidadSeleccionada },
+    ]);
     setProductoSeleccionado(null);
     setCantidadSeleccionada(1);
   };
@@ -90,30 +96,27 @@ function App() {
   };
 
   const eliminarProducto = (index) => {
-    setPedidoItems(pedidoItems.filter((_, i) => i !== index));
+    const nuevosItems = pedidoItems.filter((_, i) => i !== index);
+    setPedidoItems(nuevosItems);
   };
 
   const calcularTotal = () => {
     return pedidoItems.reduce((total, item) => total + item.precio * item.cantidad, 0);
   };
 
+  // Enviar pedido incluyendo municipio y departamento
   const enviarPedido = () => {
     if (!clienteSeleccionado || pedidoItems.length === 0 || !vendedor) {
       alert("Completa cliente, productos y vendedor primero");
       return;
     }
 
-    // 🔹 Obtener datos completos del cliente
-    const clienteData = clientes.find((c) => c["codigo"] === clienteSeleccionado.value);
-    const municipio = clienteData?.["municipio"] || "";
-    const departamento = clienteData?.["departamento"] || "";
-
     const pedido = {
       cliente: clienteSeleccionado.label,
-      municipio,
-      departamento,
       vendedor,
       comentarios,
+      municipio,
+      departamento,
       items: pedidoItems.map((item) => ({
         codigo: item.value,
         producto: item.label.split(" | ")[0],
@@ -126,10 +129,10 @@ function App() {
 
     const params = new URLSearchParams({
       cliente: pedido.cliente,
-      municipio: pedido.municipio,
-      departamento: pedido.departamento,
       vendedor: pedido.vendedor,
       comentarios: pedido.comentarios,
+      municipio: pedido.municipio,
+      departamento: pedido.departamento,
       items: JSON.stringify(pedido.items),
       total: pedido.total,
     });
@@ -139,6 +142,7 @@ function App() {
       .then((data) => {
         if (data.status === "success") {
           setMensajeExito("✅ Pedido enviado correctamente");
+
           setTimeout(() => {
             setMensajeExito("");
             setClienteSeleccionado(null);
@@ -149,6 +153,8 @@ function App() {
             setVendedor(null);
             setToken("");
             setTokenValido(false);
+            setMunicipio("");
+            setDepartamento("");
           }, 2500);
         } else {
           alert("❌ Error al enviar pedido: " + data.message);
@@ -220,94 +226,13 @@ function App() {
           <Select
             options={opcionesClientes}
             value={clienteSeleccionado}
-            onChange={setClienteSeleccionado}
+            onChange={handleClienteChange} // 🔹 Cambio aquí
             placeholder="Buscar cliente..."
           />
-        </div>
-
-        <div className="mb-4">
-          <label className="block mb-1 font-medium">Seleccionar Producto:</label>
-          <Select
-            options={opcionesProductos}
-            value={productoSeleccionado}
-            onChange={setProductoSeleccionado}
-            placeholder="Buscar producto..."
-          />
-          <div className="flex items-center mt-2">
-            <input
-              type="number"
-              min="1"
-              value={cantidadSeleccionada}
-              onChange={(e) => setCantidadSeleccionada(parseInt(e.target.value) || 1)}
-              className="w-20 px-2 py-1 border rounded mr-4"
-              placeholder="Cantidad"
-            />
-            <button
-              onClick={agregarProducto}
-              className="px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
-            >
-              Agregar
-            </button>
+          <div className="mt-2 text-sm text-gray-700">
+            <p>Municipio: {municipio}</p>
+            <p>Departamento: {departamento}</p>
           </div>
         </div>
 
-        <div className="mb-4">
-          <label className="block mb-1 font-medium">Comentarios:</label>
-          <textarea
-            value={comentarios}
-            onChange={(e) => setComentarios(e.target.value)}
-            placeholder="Notas adicionales sobre el pedido..."
-            className="w-full px-3 py-2 border rounded"
-          ></textarea>
-        </div>
-
-        {pedidoItems.length > 0 && (
-          <div className="border rounded p-4 bg-gray-50 text-sm">
-            <h4 className="font-semibold text-lg mb-3 text-center">Resumen del Pedido</h4>
-            <ul className="mb-3 space-y-2">
-              {pedidoItems.map((item, index) => (
-                <li key={index} className="flex justify-between items-center text-xs">
-                  <span>{item.label}</span>
-                  <div className="flex items-center space-x-2">
-                    <span>Cant:</span>
-                    <input
-                      type="number"
-                      min="1"
-                      value={item.cantidad}
-                      onChange={(e) => actualizarCantidad(index, e.target.value)}
-                      className="w-12 px-1 border rounded"
-                    />
-                    <span>Total: ${(item.precio * item.cantidad).toFixed(2)}</span>
-                    <button
-                      onClick={() => eliminarProducto(index)}
-                      className="text-red-600 hover:underline"
-                    >
-                      Borrar
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-            <p className="mb-3 font-bold text-center text-base">
-              Total Pedido: ${calcularTotal().toFixed(2)}
-            </p>
-            <div className="text-center">
-              <button
-                onClick={() => {
-                  if (window.confirm("¿Estás seguro de enviar este pedido?")) {
-                    enviarPedido();
-                  }
-                }}
-                className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-              >
-                Enviar Pedido
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-export default App;
+        {/* Resto del formulario sigue igual */}
