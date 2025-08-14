@@ -1,4 +1,4 @@
-// ✅ Código actualizado con asteriscos en token y campo de comentarios
+// ✅ Código actualizado con municipio y departamento automáticos
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 
@@ -8,10 +8,19 @@ const CLIENTES_CSV_URL =
 const PRODUCTOS_CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vSKax5qR7rcDOLBKtZqhHFvD2U1INj5kWvfsSE2smhLSk2Y9nEfVws2X81B-JE1t2gStdUMoc9ttlM4/pub?gid=797464977&single=true&output=csv";
 
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyEHCAZ2G3WGpgeu3vCj11TT8PBDnOCF7fS33mYQd8PPdADIZ0Uz2Q4ob3rACdDTtX86Q/exec";
+const APPS_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbyEHCAZ2G3WGpgeu3vCj11TT8PBDnOCF7fS33mYQd8PPdADIZ0Uz2Q4ob3rACdDTtX86Q/exec";
 
 const TOKENS_VALIDOS = ["1230", "4560", "7890", "1011", "1213", "1415", "1617"];
-const NOMBRES_VENDEDORES = ["Oscar Zuniga", "Vanessa Perez", "Karen Turcios", "Saul Rivas", "Jaime Ramirez", "Johanna Vides", "Oficina"];
+const NOMBRES_VENDEDORES = [
+  "Oscar Zuniga",
+  "Vanessa Perez",
+  "Karen Turcios",
+  "Saul Rivas",
+  "Jaime Ramirez",
+  "Johanna Vides",
+  "Oficina",
+];
 
 function csvToJson(csv) {
   const lines = csv.trim().split("\n");
@@ -69,10 +78,7 @@ function App() {
     const yaExiste = pedidoItems.find((item) => item.value === productoSeleccionado.value);
     if (yaExiste) return alert("Producto ya agregado");
 
-    setPedidoItems([
-      ...pedidoItems,
-      { ...productoSeleccionado, cantidad: cantidadSeleccionada },
-    ]);
+    setPedidoItems([...pedidoItems, { ...productoSeleccionado, cantidad: cantidadSeleccionada }]);
     setProductoSeleccionado(null);
     setCantidadSeleccionada(1);
   };
@@ -84,8 +90,7 @@ function App() {
   };
 
   const eliminarProducto = (index) => {
-    const nuevosItems = pedidoItems.filter((_, i) => i !== index);
-    setPedidoItems(nuevosItems);
+    setPedidoItems(pedidoItems.filter((_, i) => i !== index));
   };
 
   const calcularTotal = () => {
@@ -98,8 +103,15 @@ function App() {
       return;
     }
 
+    // 🔹 Obtener datos completos del cliente
+    const clienteData = clientes.find((c) => c["codigo"] === clienteSeleccionado.value);
+    const municipio = clienteData?.["municipio"] || "";
+    const departamento = clienteData?.["departamento"] || "";
+
     const pedido = {
       cliente: clienteSeleccionado.label,
+      municipio,
+      departamento,
       vendedor,
       comentarios,
       items: pedidoItems.map((item) => ({
@@ -114,6 +126,8 @@ function App() {
 
     const params = new URLSearchParams({
       cliente: pedido.cliente,
+      municipio: pedido.municipio,
+      departamento: pedido.departamento,
       vendedor: pedido.vendedor,
       comentarios: pedido.comentarios,
       items: JSON.stringify(pedido.items),
@@ -125,7 +139,6 @@ function App() {
       .then((data) => {
         if (data.status === "success") {
           setMensajeExito("✅ Pedido enviado correctamente");
-
           setTimeout(() => {
             setMensajeExito("");
             setClienteSeleccionado(null);
@@ -150,7 +163,7 @@ function App() {
         <div className="bg-white p-6 rounded shadow-md w-full max-w-sm">
           <h2 className="text-lg font-bold mb-3 text-center">Ingrese Token</h2>
           <input
-            type="password" // 🔹 Ahora muestra asteriscos
+            type="password"
             value={token}
             onChange={(e) => setToken(e.target.value)}
             placeholder="Token..."
@@ -238,7 +251,6 @@ function App() {
           </div>
         </div>
 
-        {/* 🔹 Campo de comentarios */}
         <div className="mb-4">
           <label className="block mb-1 font-medium">Comentarios:</label>
           <textarea
@@ -265,7 +277,7 @@ function App() {
                       onChange={(e) => actualizarCantidad(index, e.target.value)}
                       className="w-12 px-1 border rounded"
                     />
-                    <span>Total: ${ (item.precio * item.cantidad).toFixed(2) }</span>
+                    <span>Total: ${(item.precio * item.cantidad).toFixed(2)}</span>
                     <button
                       onClick={() => eliminarProducto(index)}
                       className="text-red-600 hover:underline"
@@ -276,7 +288,9 @@ function App() {
                 </li>
               ))}
             </ul>
-            <p className="mb-3 font-bold text-center text-base">Total Pedido: ${calcularTotal().toFixed(2)}</p>
+            <p className="mb-3 font-bold text-center text-base">
+              Total Pedido: ${calcularTotal().toFixed(2)}
+            </p>
             <div className="text-center">
               <button
                 onClick={() => {
