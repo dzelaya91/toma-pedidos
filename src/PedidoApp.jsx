@@ -54,7 +54,7 @@ function App() {
   // Opciones para Select
   const opcionesClientes = clientes.map((cliente) => ({
     value: cliente["codigo"],
-    label: `${cliente["cliente"]} - ${cliente["direccion"]}`,
+    label: `${cliente["cliente"]} - ${cliente["codigo"]}`,
     municipio: cliente["municipio"] || "",
     departamento: cliente["departamento"] || "",
   }));
