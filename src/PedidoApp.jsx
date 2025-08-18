@@ -74,12 +74,12 @@ function App() {
       { ...productoSeleccionado, cantidad: cantidadSeleccionada },
     ]);
     setProductoSeleccionado(null);
-    setCantidadSeleccionada(1);
+    setCantidadSeleccionada(0);
   };
 
   const actualizarCantidad = (index, nuevaCantidad) => {
     const nuevosItems = [...pedidoItems];
-    nuevosItems[index].cantidad = parseInt(nuevaCantidad) || 1;
+    nuevosItems[index].cantidad = parseInt(nuevaCantidad) || 0;
     setPedidoItems(nuevosItems);
   };
 
