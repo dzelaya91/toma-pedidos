@@ -74,7 +74,7 @@ function App() {
       { ...productoSeleccionado, cantidad: cantidadSeleccionada },
     ]);
     setProductoSeleccionado(null);
-    setCantidadSeleccionada(0);
+    setCantidadSeleccionada("");
   };
 
   const actualizarCantidad = (index, nuevaCantidad) => {
@@ -130,7 +130,7 @@ function App() {
             setMensajeExito("");
             setClienteSeleccionado(null);
             setProductoSeleccionado(null);
-            setCantidadSeleccionada(0);
+            setCantidadSeleccionada("");
             setPedidoItems([]);
             setComentarios("");
             setVendedor(null);
