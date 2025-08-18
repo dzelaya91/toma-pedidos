@@ -223,9 +223,9 @@ function App() {
           <div className="flex items-center mt-2">
             <input
               type="number"
-              min="0"
+              min="1"
               value={cantidadSeleccionada}
-              onChange={(e) => setCantidadSeleccionada(parseInt(e.target.value) || 1)}
+              onChange={(e) => setCantidadSeleccionada(parseInt(e.target.value) || 0)}
               className="w-20 px-2 py-1 border rounded mr-4"
               placeholder="Cantidad"
             />
