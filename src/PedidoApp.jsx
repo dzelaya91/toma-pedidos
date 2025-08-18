@@ -65,7 +65,7 @@ function App() {
   });
 
   const agregarProducto = () => {
-    if (!productoSeleccionado || cantidadSeleccionada < 1) return;
+    if (!productoSeleccionado || cantidadSeleccionada < 0) return;
     const yaExiste = pedidoItems.find((item) => item.value === productoSeleccionado.value);
     if (yaExiste) return alert("Producto ya agregado");
 
@@ -130,7 +130,7 @@ function App() {
             setMensajeExito("");
             setClienteSeleccionado(null);
             setProductoSeleccionado(null);
-            setCantidadSeleccionada(1);
+            setCantidadSeleccionada(0);
             setPedidoItems([]);
             setComentarios("");
             setVendedor(null);
