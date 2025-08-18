@@ -31,7 +31,7 @@ function App() {
   const [productos, setProductos] = useState([]);
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
-  const [cantidadSeleccionada, setCantidadSeleccionada] = useState(1);
+  const [cantidadSeleccionada, setCantidadSeleccionada] = useState(0);
   const [pedidoItems, setPedidoItems] = useState([]);
   const [comentarios, setComentarios] = useState("");
   const [mensajeExito, setMensajeExito] = useState("");
