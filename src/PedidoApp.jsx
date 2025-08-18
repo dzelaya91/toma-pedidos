@@ -31,7 +31,7 @@ function App() {
   const [productos, setProductos] = useState([]);
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
-  const [cantidadSeleccionada, setCantidadSeleccionada] = useState(0);
+  const [cantidadSeleccionada, setCantidadSeleccionada] = useState(null);
   const [pedidoItems, setPedidoItems] = useState([]);
   const [comentarios, setComentarios] = useState("");
   const [mensajeExito, setMensajeExito] = useState("");
@@ -65,7 +65,7 @@ function App() {
   });
 
   const agregarProducto = () => {
-    if (!productoSeleccionado || cantidadSeleccionada =< 0) return;
+    if (!productoSeleccionado || cantidadSeleccionada < 0) return;
     const yaExiste = pedidoItems.find((item) => item.value === productoSeleccionado.value);
     if (yaExiste) return alert("Producto ya agregado");
 
