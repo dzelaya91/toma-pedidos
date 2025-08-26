@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import Select from "react-select";
 
 const CLIENTES_CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSKax5qR7rcDOLBKtZqhHFvD2U1INj5kWvfsSE2smhLSk2Y9nEfVws2X81B-JE1t2gStdUMoc9ttlM4/pub?gid=0&single=true&output=csv";
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ0ywBkJ8JIvJTb8IUKTy6g_Z6_Qo4UbboMR-J9OSW1RLGs7bQjwG3H_KIkQJs8f0QMc-wbAgoHamI0/pub?gid=1044262438&single=true&output=csv";
 
 const PRODUCTOS_CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSKax5qR7rcDOLBKtZqhHFvD2U1INj5kWvfsSE2smhLSk2Y9nEfVws2X81B-JE1t2gStdUMoc9ttlM4/pub?gid=797464977&single=true&output=csv";
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ0ywBkJ8JIvJTb8IUKTy6g_Z6_Qo4UbboMR-J9OSW1RLGs7bQjwG3H_KIkQJs8f0QMc-wbAgoHamI0/pub?gid=959350807&single=true&output=csv";
 
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyEHCAZ2G3WGpgeu3vCj11TT8PBDnOCF7fS33mYQd8PPdADIZ0Uz2Q4ob3rACdDTtX86Q/exec";
 
