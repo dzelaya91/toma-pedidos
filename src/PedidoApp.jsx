@@ -10,8 +10,8 @@ const PRODUCTOS_CSV_URL =
 
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyEHCAZ2G3WGpgeu3vCj11TT8PBDnOCF7fS33mYQd8PPdADIZ0Uz2Q4ob3rACdDTtX86Q/exec";
 
-const TOKENS_VALIDOS = ["1230", "4560", "7890", "1011", "1213", "1415", "1617"];
-const NOMBRES_VENDEDORES = ["Oscar Zuniga", "Vanessa Perez", "Karen Turcios", "Saul Rivas", "Jaime Ramirez", "Johanna Vides", "Oficina"];
+const TOKENS_VALIDOS = ["1230", "4560", "7890", "1011", "1415", "1617"];
+const NOMBRES_VENDEDORES = ["Oscar Zuniga", "Vanessa Perez", "Saul Rivas", "Johanna Vides", "Oficina"];
 
 function csvToJson(csv) {
   const lines = csv.trim().split("\n");
