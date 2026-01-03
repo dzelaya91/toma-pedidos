@@ -8,7 +8,7 @@ const CLIENTES_CSV_URL =
 const PRODUCTOS_CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ0ywBkJ8JIvJTb8IUKTy6g_Z6_Qo4UbboMR-J9OSW1RLGs7bQjwG3H_KIkQJs8f0QMc-wbAgoHamI0/pub?gid=959350807&single=true&output=csv";
 
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyEHCAZ2G3WGpgeu3vCj11TT8PBDnOCF7fS33mYQd8PPdADIZ0Uz2Q4ob3rACdDTtX86Q/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwY3ruvHuuZGTR65FEobxKgFZa9wDNhu8BWmg8VHEF3V7_PgoTO9iCZr1-0rkG6vC-jyA/exec";
 
 const TOKENS_VALIDOS = ["1230", "4560", "7890", "1011", "1415", "1617"];
 const NOMBRES_VENDEDORES = ["Oscar Zuniga", "Vanessa Perez", "Saul Rivas", "Johanna Vides", "Oficina"];
@@ -114,6 +114,7 @@ function App() {
 
     const params = new URLSearchParams({
       cliente: pedido.cliente,
+      clienteCodigo: clienteSeleccionado.value,
       vendedor: pedido.vendedor,
       comentarios: pedido.comentarios,
       items: JSON.stringify(pedido.items),
